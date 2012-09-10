@@ -1,2 +1,5 @@
-
+#files class path files, should be different on mac vs windows
 .classpath
+
+#Mac files
+.DS_Store
