@@ -53,7 +53,7 @@ public class CIAFactbookUI {
 						System.out.print("Enter a count: ");
 						count = scanner.nextLine();
 						
-						search = new PoliticalPartySearch(continent, Integer.parseInt(count));
+						search = new PoliticalPartySearch(continent, count);
 						results = search.Search();
 						break;
 					case "3":
@@ -65,6 +65,7 @@ public class CIAFactbookUI {
 						break;
 					case "4":
 						search = new LandlockSearch();
+						results = search.Search();
 						break;
 					case "5":
 						System.out.println("Enter a maximum distance in degrees: ");
@@ -75,11 +76,13 @@ public class CIAFactbookUI {
 						break;
 					case "list-options":
 						PrintOptions();
+						break;
 					case "quit":
 						System.out.println("\nHope you were satisfied!\nQuitting...");
 						System.exit(0);
 					default:
 						System.out.println("You have not entered a valid option.");
+						break;
 				}
 				
 				if (results != null && results.size() > 0)

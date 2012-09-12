@@ -10,7 +10,7 @@ public class HTMLDocument {
 	
 	public HTMLDocument (String url) throws Exception
 	{
-		doc = Jsoup.connect(url).get();
+		doc = Jsoup.connect(url).timeout(20 * 1000).get();
 	}
 	
 	public Document getDocument()
