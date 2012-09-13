@@ -1,5 +1,15 @@
 package Assignment1;
 
+/**
+ * GeographicRegion.java
+ * KL2495
+ * A helper class to represent a capital city for use in the VacationSearch class. Each GeographicRegion stores the name of the capital,
+ * the name of the country, and the geographic coordinates of the capital.
+ * There is also a helper method to determine if another geographic region is within a specified degree range. The algorithm for determining
+ * acceptable range is rectangular, in that if a square with side of length of the range can fit over both GeographicRegions, then the two 
+ * are considered within range.
+ */
+
 public class GeographicRegion {
 
 	private String _capital;
@@ -15,6 +25,12 @@ public class GeographicRegion {
 		_lat = latitude;
 	}
 	
+	/**
+	 * A method to determine whether or not two GeographicRegions are within a specified range of eachother.
+	 * @param range : maximum range for acceptance
+	 * @param geo : GeographicRegion to compare to
+	 * @return : boolean of whether or not the two regions are in range
+	 */
 	public boolean WithinRange(int range, GeographicRegion geo)
 	{
 		boolean output = true;
@@ -31,8 +47,6 @@ public class GeographicRegion {
 		}
 		else
 			a = Math.abs(Double.parseDouble(longParts[0]) - Double.parseDouble(longParts_2[0]));
-		if (a > 180)
-			a = 360 - a;
 		
 		if (!latParts[2].equals(latParts_2[2]))	//account for E/W discrepancies
 		{
@@ -40,22 +54,16 @@ public class GeographicRegion {
 		}
 		else
 			b = Math.abs(Double.parseDouble(latParts[0]) - Double.parseDouble(latParts_2[0]));
-		if (b > 180)
-			b = 360 - b;
 		
-		//Euclidean geometry to find distance
-		double a_2 = Math.pow(a, 2);
-		double b_2 = Math.pow(b, 2);
-		double dist = Math.sqrt(a_2 + b_2);
-		
-		if (dist > range) {
+		//measure proximity by rectangle formed by "range" variable
+		if (a > range || b > range)
 			output = false;
-			System.out.println(_capital + "|" + geo.getName());
-		}
 		
 		return output;
 	}
 	
+	
+	//accessor methods
 	public String getLat()
 	{
 		return _lat;

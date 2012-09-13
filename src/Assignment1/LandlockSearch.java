@@ -1,5 +1,15 @@
 package Assignment1;
 
+/**
+ * LandlockSearch.java
+ * KL2495
+ * An implementation of the IFactSearch interface that searches for all countries that are landlocked.
+ * This is done by searching all country profile pages for their "Coastline" data fields and checking
+ * them for the presence of a "landlocked" keyword.
+ * 
+ * Data source: "https://www.cia.gov/"
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,17 +18,23 @@ import org.jsoup.select.Elements;
 
 public class LandlockSearch implements IFactSearch {
 
+	/**
+	 * Constructor for search for landlocked countries
+	 */
 	public LandlockSearch()
 	{
 		
 	}
 	
-	@Override
+	/**
+	 * An override search method to find all landlocked countries in the world.
+	 * @return : list of landlocked countries
+	 */
 	public List<String> Search() throws Exception 
 	{
 		ArrayList<String> output = new ArrayList<String>();
 		
-		HTMLDocument doc;
+		HTMLDocument doc; //fetch data from cia factbook about all countries and the urls to their profile pages
 		try
 		{
 			doc = new HTMLDocument("https://www.cia.gov/library/publications/the-world-factbook/print/textversion.html");
@@ -28,16 +44,16 @@ public class LandlockSearch implements IFactSearch {
 			throw new Exception("Unable to query the CIA factbook. You may have been locked out of their servers. Change your IP and try again or wait a few hours.");
 		}
 		
+		//loop through all countries and their profile pages
 		Elements countryElements = doc.Select(".category");
 		for (int i = 0; i < countryElements.size(); i++)
 		{
 			Element country = countryElements.get(i);
-			if (country.child(0).html().contains("World"))
+			if (country.child(0).html().contains("World")) //skips "World" profile page
 				continue;
 			
-			String dataUrl = "https://www.cia.gov/library/publications/the-world-factbook/" + country.child(0).attr("href").substring(3);
-			HTMLDocument countryDoc;
-			
+			String dataUrl = "https://www.cia.gov/library/publications/the-world-factbook/" + country.child(0).attr("href").substring(3); //build url to country profile page
+			HTMLDocument countryDoc; //fetches profile page data
 			try
 			{
 				countryDoc = new HTMLDocument(dataUrl);
@@ -47,6 +63,7 @@ public class LandlockSearch implements IFactSearch {
 				throw new Exception("Unable to query the CIA factbook. You may have been locked out of their servers. Change your IP and try again or wait a few hours.");
 			}
 			
+			//navigate to the "Coastline" field and check for presence of "landlocked" keyword
 			Elements dataCategories = countryDoc.Select(".category");
 			for (int j = 0; j < dataCategories.size(); j++)
 			{

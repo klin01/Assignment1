@@ -1,0 +1,251 @@
+README
+Advanced Software Engineering Assignment 1
+Kevin Lin (KL2495)
+
+Part 1:
+This assignment was done in Java to create a console based UI for querying the CIA Factbook database at
+"https://www.cia.gov/library/publications/the-world-factbook/". The UI consists of textual prompts that assist
+the user in inputting options and parameter values to conduct searches.
+
+Upon program start, the user is confronted with a list of options, 1-5 (which correspond with the assignment
+queries) as well as an option to relist the options or quit the program.
+
+Example Output:
+
+Welcome! Use this application to query the CIA World Factbook.
+Here are your options:
+1 : List countries in "South America" that are prone to "earthquakes".
+2 : List countries in "Asia" with more than "10" political parties.
+3 : Find all countries that have the color "blue" in their flag.
+4 : Find all landlocked countries.
+5 : Find a list of lat/long coordinates and countries/capitals that can be visited, maximizing the number visited where capitals are within "10" degrees of each other.
+list-options : Relists these options.
+quit : Exits the program.
+
+Enter an option:
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Option 1)
+Returns a list of countries in a specified continent that are susceptible to a specified natural disaster. The implementation
+for this consists of a compiling a hashtable of countries with keys of the continent names the countries belong to using data
+from "https://www.cia.gov/library/publications/the-world-factbook/fields/2145.html". Something to note is that France is considered
+to be a part of many regions by the CIA Factbook, but I hard coded it so that it is only considered a part of Europe.
+Then using that hashtable, I can find the countries within the specified continent to fetch the specific urls to the country 
+profile pages from "https://www.cia.gov/library/publications/the-world-factbook/print/textversion.html". Then by fetching the html 
+data from the country profile pages, I can traverse the DOM to the "Natural hazards" header and read the data below. Then by doing a simple
+word search, I can search for the presence of the specified disaster.
+
+Example Output:
+
+Enter an option: 1
+Enter a continent: Asia
+Enter a disaster type: tsunami
+Time to query: 1.55 seconds
+--------------------------------------
+Your query has returned the following:
+China
+Japan
+Maldives
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Option 2)
+Returns a list of countries in a specified continent that have at more than a specified number of political parties. The
+implementation for this is done in much the same way as that of Option 1. A list of continent-country mappings is
+compiled into a hashtable. Then after looking up the continent specified, I find the country profile pages of the relevant
+countries. Then by doing a simple DOM traversal I navigate to the header "Political parties" and do a count of the
+semicolon separated political parties.
+
+Example Output:
+
+Enter an option: 2
+Enter a continent: South America
+Enter a count: 5
+Time to query: 0.741 seconds
+--------------------------------------
+Your query has returned the following:
+Argentina
+Bolivia
+Brazil
+Chile
+Colombia
+Ecuador
+Guyana
+Paraguay
+Peru
+Suriname
+Venezuela
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Option 3)
+Returns a list of countries with the specified color in their flags. The implementation for this consists of searching
+the html document fetched from "https://www.cia.gov/library/publications/the-world-factbook/print/textversion.html" for
+all the hyperlinked profile pages. Then I loop through them and hit each profile page, looking for the "Flag description"
+header which describes colors on the flag. A simple word search for the color specified in the "Flag description" field
+will determine whether or not that country name needs to be returned.
+
+Example Output:
+
+Enter an option: 3
+Enter a flag color: brown
+Time to query: 13.092 seconds
+--------------------------------------
+Your query has returned the following:
+American Samoa
+Sint Maarten
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Option 4)
+Returns a list of landlocked countries. The implementation for this is similar to that of Option 3 in that I hit each
+country profile page and look for the "Coastline" field header. The description for that field directly says "(landlocked)"
+for countries that are landlocked, so those countries are returned if that keyword is present.
+
+Example Output:
+
+Enter an option: 4
+Time to query: 12.943 seconds
+--------------------------------------
+Your query has returned the following:
+Afghanistan
+Andorra
+Armenia
+Austria
+Azerbaijan
+Belarus
+Bhutan
+Bolivia
+Botswana
+Burkina Faso
+Burundi
+Central African Republic
+Chad
+Czech Republic
+Ethiopia
+Holy See (Vatican City)
+Hungary
+Kazakhstan
+Kosovo
+Kyrgyzstan
+Laos
+Lesotho
+Liechtenstein
+Luxembourg
+Macedonia
+Malawi
+Mali
+Moldova
+Mongolia
+Nepal
+Niger
+Paraguay
+Rwanda
+San Marino
+Serbia
+Slovakia
+South Sudan
+Swaziland
+Switzerland
+Tajikistan
+Uganda
+Uzbekistan
+Holy See (Vatican City)
+West Bank
+Zambia
+Zimbabwe
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Option 5)
+Returns a list of capitals (and the countries they belong to) that are within a certain degree range of each other.
+The implementation of this consists of first querying the HTML document data from the page 
+"https://www.cia.gov/library/publications/the-world-factbook/print/textversion.html", which contains data about
+capitals, the countries they belong to, and their geographical coordinates. It is assumed that anything listed
+with a "(capital)" keyword is a capital to be considered for this problem. After compiling a list of capitals and
+related data, I generated the powerset of the list. Then by checking each powerset for the fulfillment of the
+distance condition, I found the set of geographic capitals that have the most points to determine the best
+vacation pathing.
+
+The distance condition I used is based on a rectangular model. As long as a square with sides of length of the maximum
+distance specified can fit over both geographic regions, then I consider the two regions to be within required
+range of each other.
+
+The performance of this algorithm varied widely depending on the distance considered, and thus the amount of geographical
+points considered. Some sample outputs for varied distance inputs are below. WARNING: for inputs of 10+ degrees, the
+program can take upwards of 20 minutes to complete.
+
+Example Outputs:
+
+Enter an option: 5
+Enter a maximum distance in degrees: 1
+Time to generate subsets: 0.107
+Time to query: 0.107 seconds
+--------------------------------------
+Your query has returned the following:
+Valley, The  (Anguilla)
+Road Town  (British Virgin Islands)
+Philipsburg  (Sint Maarten)
+Marigot  (Saint Martin)
+Charlotte Amalie  (Virgin Islands)
+
+
+Enter an option: 5
+Enter a maximum distance in degrees: 7
+Time to generate subsets: 65.881
+Time to query: 65.889 seconds
+--------------------------------------
+Your query has returned the following:
+Willemstad  (Curacao)
+Valley, The  (Anguilla)
+San Juan  (Puerto Rico)
+Saint John's  (Antigua and Barbuda)
+Saint George's  (Grenada)
+Roseau  (Dominica)
+Road Town  (British Virgin Islands)
+Plymouth  (Montserrat)
+Philipsburg  (Sint Maarten)
+Marigot  (Saint Martin)
+Kingstown  (Saint Vincent and the Grenadines)
+Gustavia  (Saint Barthelemy)
+Fort-de-France  (Martinique)
+Charlotte Amalie  (Virgin Islands)
+Castries  (Saint Lucia)
+Basseterre  (Saint Kitts and Nevis)
+Basse-Terre  (France (Guadeloupe))
+
+Enter an option: 5
+Enter a maximum distance in degrees: 10
+Time to generate subsets: 1478.196
+Time to query: 1478.235 seconds
+--------------------------------------
+Your query has returned the following:
+Willemstad  (Curacao)
+Valley, The  (Anguilla)
+Santo Domingo  (Dominican Republic)
+San Juan  (Puerto Rico)
+Saint John's  (Antigua and Barbuda)
+Saint George's  (Grenada)
+Roseau  (Dominica)
+Road Town  (British Virgin Islands)
+Port-of-Spain  (Trinidad and Tobago)
+Plymouth  (Montserrat)
+Philipsburg  (Sint Maarten)
+Oranjestad  (Aruba)
+Marigot  (Saint Martin)
+Kingstown  (Saint Vincent and the Grenadines)
+Gustavia  (Saint Barthelemy)
+Fort-de-France  (Martinique)
+Charlotte Amalie  (Virgin Islands)
+Castries  (Saint Lucia)
+Caracas  (Venezuela)
+Basseterre  (Saint Kitts and Nevis)
+Basse-Terre  (France (Guadeloupe))
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Considerations:
+
+I used an external java package to manage the web requests to the CIA Factbook site. The Jsoup package provided HTML document fetching
+and CSS Selector parsing. Documentation and source can be found at "http://jsoup.org/" as well as in the source files of this assignment.

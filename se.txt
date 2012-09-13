@@ -1,0 +1,49 @@
+Advanced Software Engineering Assignment 1
+KL2495
+
+Part 2:
+
+Requirements Engineering:
+When I started this assignment, I looked at the questions/requirements of the assignment, primarily to determine
+the format of the UI, since that is what the grader will be looking at first and foremost. There had to be a clear
+way for the user to select which query to conduct and the UI as well as the backend should support that easily.
+This led me to create an interface class, IFactSearch, for all the different searches to be based on.
+
+Formal Design:
+I'm not entirely sure how to use UMLs or CRCs so I didn't really go in that direction. I did go with a
+programmatic design pattern that involved an interface and several implementations, one for each different
+type of search query. The advantage of using an interface was in making the code feel much more organized,
+and making the code very easy to expand upon with the addition of support for each different type of query
+as I was building it.
+
+Software Process:
+Although I am familiar with Agile and a little bit of Waterfall, I didn't really see the need for it on a project
+of this scale. It seemed like it would make a lot of unnecessary work for this assignment. Perhaps that is one of it's
+disadvantages: doesn't really apply to small scale projects.
+
+Software Testing:
+I'm not too sure of what the terms "Black Box", "White Box", and "Acceptance Testing" mean but I did do some quick
+"unit"-like testing as I was developing this small application. As I was building classes, I did have a quickly
+written console printing class to make sure that my classes were outputting the desired data, and to use to figure out
+how to use the Jsoup web request package I was using.
+
+Software Quality Assurance:
+After some testing, I found that the 5th query, for distance grouped capitals, was running extremely slow, taking sometimes
+upwards of 30 minutes to do. I realized that this was definitely taking too long and thus I had to sit down and
+think of a slightly more optimal algorithm for calculating the solution. With some testing and playing around, I was
+able to reduce the query time significantly, although for some cases, the overhead is still quite large.
+
+Software Component Models:
+When I was informed of this assignment, I was originally hoping there would be some API maintained by the website
+to query the data from in a nice JSON or xml format. But since there wasn't I had to resort to just pulling the
+raw HTML data and parsing it as such. For help, I found an external javascript package called Jsoup which is a pretty
+useful library for making web requests and pulling html documents into traversable objects in java. It also had support
+for css selection on document elements so that made things much easier as well.
+
+Software Tools:
+I worked primarily in an Eclipse environment, making good use of the debugger and code completion tools. And since I was
+working on two different computers, I took the opportunity to start using GitHub as a version control tool. The advantages
+to this were pretty evident: much more reliable and less copy-paste involved code management as well as alerts and updates 
+for code mis-alignments. Obviously, it'd be much more useful if more than one person were working on this assignment.
+The advantages of using an IDE included built in debugger and nice file hierarchical management.
+

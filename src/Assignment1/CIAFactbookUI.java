@@ -31,7 +31,7 @@ public class CIAFactbookUI {
 				System.out.print("\nEnter an option: ");
 				String input = scanner.nextLine();
 				List<String> results = null;
-				
+				long initTime = 0;
 				String continent;
 				String disaster;
 				String count;
@@ -45,7 +45,9 @@ public class CIAFactbookUI {
 						disaster = scanner.nextLine();
 						
 						search = new DisasterSearch(continent, disaster);
+						initTime = System.currentTimeMillis();
 						results = search.Search();
+						System.out.println("Time to query: " + (System.currentTimeMillis() - initTime)/1000.00 + " seconds");
 						break;
 					case "2":
 						System.out.print("Enter a continent: ");
@@ -54,31 +56,40 @@ public class CIAFactbookUI {
 						count = scanner.nextLine();
 						
 						search = new PoliticalPartySearch(continent, count);
+						initTime = System.currentTimeMillis();
 						results = search.Search();
+						System.out.println("Time to query: " + (System.currentTimeMillis() - initTime)/1000.00 + " seconds");
 						break;
 					case "3":
 						System.out.print("Enter a flag color: ");
 						color = scanner.nextLine();
 						
 						search = new FlagSearch(color);
+						initTime = System.currentTimeMillis();
 						results = search.Search();
+						System.out.println("Time to query: " + (System.currentTimeMillis() - initTime)/1000.00 + " seconds");
 						break;
 					case "4":
 						search = new LandlockSearch();
+						initTime = System.currentTimeMillis();
 						results = search.Search();
+						System.out.println("Time to query: " + (System.currentTimeMillis() - initTime)/1000.00 + " seconds");
 						break;
 					case "5":
-						System.out.println("Enter a maximum distance in degrees: ");
+						System.out.print("Enter a maximum distance in degrees: ");
 						count = scanner.nextLine();
 						
 						search = new VacationSearch(Integer.parseInt(count));
+						initTime = System.currentTimeMillis();
 						results = search.Search();
+						System.out.println("Time to query: " + (System.currentTimeMillis() - initTime)/1000.00 + " seconds");
 						break;
 					case "list-options":
 						PrintOptions();
 						break;
 					case "quit":
 						System.out.println("\nHope you were satisfied!\nQuitting...");
+						scanner.close();
 						System.exit(0);
 					default:
 						System.out.println("You have not entered a valid option.");
