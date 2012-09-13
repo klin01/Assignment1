@@ -249,3 +249,13 @@ Considerations:
 
 I used an external java package to manage the web requests to the CIA Factbook site. The Jsoup package provided HTML document fetching
 and CSS Selector parsing. Documentation and source can be found at "http://jsoup.org/" as well as in the source files of this assignment.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Compilation and Run Instructions:
+
+To compile navigate into the src folder and enter command:
+	javac -cp .;..\lib\jsoup-1.6.3.jar Assignment1\*.java
+	
+To run the program from console, run the following command from the same directory:
+	java -cp .;..\lib\jsoup-1.6.3.jar Assignment1/CIAFactbookUI
