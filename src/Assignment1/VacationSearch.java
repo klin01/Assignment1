@@ -19,7 +19,7 @@ public class VacationSearch implements IFactSearch {
 
 	private int _maxDistance; //measurement of max distance in degrees between any two capitals
 	private List<GeographicRegion> capitals; //list of all capitals fetched from the CIA factbook
-	
+	private List<List<GeographicRegion>> vacationPath;
 	/**
 	 * Constructor for VacationSearch implementation. Takes a parameter of max distance between capitals along vacation path.
 	 * @param maxDistance
@@ -114,16 +114,29 @@ public class VacationSearch implements IFactSearch {
 		{
 			GeographicRegion removed = leftovers.remove(0);
 			output = generateSubsets(leftovers);
-			
+			int maxLength = 0;
 			for (int i = output.size() - 1; i >= 0; i--)
 			{
+				if (maxLength < output.get(i).size())
+					maxLength = output.get(i).size();
+				
 				List<GeographicRegion> temp = new ArrayList<GeographicRegion>();
 				temp.addAll(output.get(i));
 				temp.add(removed);
 				if (checkSetIsWithinRange(temp))
 				{
 					output.add(temp);
+					if (maxLength < temp.size())
+						maxLength = temp.size();
 				}
+			}
+			
+			int maxDisparity = maxLength - leftovers.size();
+			
+			for (int i = output.size() - 1; i >= 0; i--)
+			{
+				if (output.get(i).size() - leftovers.size() < maxDisparity)
+					output.remove(i);
 			}
 		}
 		
@@ -155,5 +168,13 @@ public class VacationSearch implements IFactSearch {
 		
 		return output;
 	}
+	
+//	private List<List<GeographicRegion>> groupRegions(List<GeographicRegion> leftovers)
+//	{
+//		for (int i = 0; i < vacationPath.size(); i++)
+//		{
+//			
+//		}
+//	}
 
 }
