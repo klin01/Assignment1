@@ -55,7 +55,7 @@ public class GeographicRegion {
 		else
 			b = Math.abs(Double.parseDouble(latParts[0]) - Double.parseDouble(latParts_2[0]));
 		
-		//measure proximity by rectangle formed by "range" variable
+		//measure proximity by square formed by "range" variable
 		if (a > range || b > range)
 			output = false;
 		

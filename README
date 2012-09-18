@@ -243,6 +243,20 @@ Caracas  (Venezuela)
 Basseterre  (Saint Kitts and Nevis)
 Basse-Terre  (France (Guadeloupe))
 
+Algorithm used:
+The basis of the algorithm used in this search was to find the power set of the set of all the capitals included on the specified
+page of the CIA Factbook while eliminating all the sets that did not satisfy the vacationing criteria. Then looping through all of
+them, determine the largest set (ties go to the first one found) and print out the locations in that set.
+
+Another algorithm I tried was to use each point as a starting point and iterate through the list of capitals, adding each capital
+that satisfies the vacation criteria to the starting point set. However I realized that the results of this algorithm was too
+determinant on the order of the capitals being iterated through and that inclusion of one capital could potentially exclude
+other capitals that might lead to a larger list. Through this I realized that the only way to determine the largest path would
+be to generate all the sets that satisfied the criteria and check for the largest.
+
+Looking at the outcome, I realize that my algorithm may not be the most efficient (taking upwards of 20 minutes for an input
+of 10 degrees and increasing exponentially from there). But it gets the job done.
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Considerations:

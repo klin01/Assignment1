@@ -19,7 +19,7 @@ public class VacationSearch implements IFactSearch {
 
 	private int _maxDistance; //measurement of max distance in degrees between any two capitals
 	private List<GeographicRegion> capitals; //list of all capitals fetched from the CIA factbook
-	private List<List<GeographicRegion>> vacationPath;
+	
 	/**
 	 * Constructor for VacationSearch implementation. Takes a parameter of max distance between capitals along vacation path.
 	 * @param maxDistance
@@ -98,13 +98,16 @@ public class VacationSearch implements IFactSearch {
 	
 	/**
 	 * Method to generate subsets of all the capitals fetched from the CIA factbook. Works recursively to build the
-	 * list.
+	 * list. Sets are only included if they satisfy the vacation criteria of having all capitals within a certain
+	 * range of each other.
 	 * @param leftovers : A list of all the capitals to be placed into subsets.
 	 * @return : A list of subsets of the input GeographicRegions
 	 */
-	private List<List<GeographicRegion>> generateSubsets(List<GeographicRegion> leftovers)
+	private List<List<GeographicRegion>> generateSubsets(List<GeographicRegion> input)
 	{
 		List<List<GeographicRegion>> output = new ArrayList<List<GeographicRegion>>();
+		List<GeographicRegion> leftovers = new ArrayList<GeographicRegion>();
+		leftovers.addAll(input);
 		
 		if (leftovers.size() == 0)
 		{
@@ -131,12 +134,16 @@ public class VacationSearch implements IFactSearch {
 				}
 			}
 			
-			int maxDisparity = maxLength - leftovers.size();
 			
+			
+			//remove sets of size smaller than max sized set - leftover
+			//because those sets can't possibly grow to be the largest
 			for (int i = output.size() - 1; i >= 0; i--)
 			{
-				if (output.get(i).size() - leftovers.size() < maxDisparity)
+				if (maxLength - output.get(i).size() > capitals.size() - leftovers.size() - 1)
+				{
 					output.remove(i);
+				}
 			}
 		}
 		
@@ -168,13 +175,5 @@ public class VacationSearch implements IFactSearch {
 		
 		return output;
 	}
-	
-//	private List<List<GeographicRegion>> groupRegions(List<GeographicRegion> leftovers)
-//	{
-//		for (int i = 0; i < vacationPath.size(); i++)
-//		{
-//			
-//		}
-//	}
 
 }
